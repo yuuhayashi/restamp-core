@@ -6,7 +6,8 @@ import javax.swing.JFileChooser;
 @SuppressWarnings("serial")
 public class ParameterPanelOutput extends ParameterPanelFolder
 {
-    JCheckBox outputOverwite;	// GPX_OVERWRITE_TO_SOURCE
+    public JCheckBox outputOverwite;	// _OVERWRITE_TO_SOURCE
+    ParameterPanelFolder srcPanelFolder;
     
     /**
      * コンストラクタ
@@ -20,14 +21,14 @@ public class ParameterPanelOutput extends ParameterPanelFolder
 
     /**
      * チェックボックス "入力ファイルに上書きする"
-     * @param label
+     * @param srcPanelFolder    // 
      */
-    public void addCheckOverwriteToSource(String label) {
+    public void addCheckOverwriteToSource(ParameterPanelFolder srcPanelFolder) {
+        this.srcPanelFolder = srcPanelFolder;
         boolean selected = false;
-        outputOverwite = new JCheckBox(label, selected);
+        outputOverwite = new JCheckBox(i18n.getString("label.580"), selected);
         outputOverwite.setEnabled(true);
         outputOverwite.addActionListener(new ChangeOverwriteAction());
-        this.add(outputOverwite);
     }
 
     /**
@@ -41,7 +42,10 @@ public class ParameterPanelOutput extends ParameterPanelFolder
         public void actionPerformed(java.awt.event.ActionEvent event) {
             Object object = event.getSource();
             if (object == outputOverwite) {
-                //setEnabled(outputIMG.isEnabled());
+                if (outputOverwite.isSelected()) {
+                    String text = srcPanelFolder.argField.getText();
+                    argField.setText(text);
+                }
             }
         }
     }

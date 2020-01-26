@@ -194,10 +194,11 @@ public class ReStamp extends JFrame
         // 4. "出力フォルダ: "
         {
             arg4_output = new ParameterPanelOutput(
-                i18n.getString("label.530") + ": ", 
-                params.getProperty(AppParameters.IMG_OUTPUT_FOLDER)
+                    i18n.getString("label.530") + ": ", ""
             );
-            arg4_output.addCheckOverwriteToSource(i18n.getString("label.110"));
+            
+            // チェックボックス: "入力ファイルに上書きする"
+            arg4_output.addCheckOverwriteToSource(arg1_srcFolder);
             arg4_output.argField.getDocument().addDocumentListener(
                 new SimpleDocumentListener() {
                     @Override

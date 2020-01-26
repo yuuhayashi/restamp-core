@@ -65,6 +65,7 @@ public class CardPerformFile extends Card  implements PanelAction {
         );
         argsPanel.add(packLine(label5, new JPanel()));
         argsPanel.add(arg_output);
+        argsPanel.add(arg_output.outputOverwite);
 
         // [処理実行]ボタン
         doButton = new JButton(
