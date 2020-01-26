@@ -67,7 +67,7 @@
                     </descriptorRefs>
                     <archive>
                         <manifest>
-                            <mainClass>osm.jp.gpx.matchtime.gui.AdjustTime</mainClass>
+                            <mainClass>osm.surveyor.matchtime.gui.ReStamp</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
