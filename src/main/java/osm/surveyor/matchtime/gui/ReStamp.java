@@ -236,9 +236,6 @@ public class ReStamp extends JFrame
                 }
             );
             
-            // 入力フォルダに上書きする
-            
-
             // パネル表示
             CardPerformFile card = new CardPerformFile(
                     cardPanel, 

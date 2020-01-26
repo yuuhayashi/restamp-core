@@ -51,7 +51,6 @@ public class CardPerformFile extends Card  implements PanelAction {
         
         JPanel argsPanel = new JPanel();
         argsPanel.setLayout(new BoxLayout(argsPanel, BoxLayout.PAGE_AXIS));
-        argsPanel.add(packLine(new JLabel(i18n.getString("label.200")), new JPanel()));
         
         // 出力フォルダ
         // 5. 変換先のフォルダを選択してください。
