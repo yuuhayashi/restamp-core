@@ -249,9 +249,25 @@ public class Restamp extends Thread {
                     Calendar cal = Calendar.getInstance();
                     cal.setTime(this.baseTime1);
                     cal.add(Calendar.MILLISECOND, (int) deltaMsec);
-
                     System.out.println(String.format("\t%s --> %s", df2.format(cal.getTime()), jpgFile.getFileName()));
-                    jpgFile.toFile().setLastModified(cal.getTimeInMillis());
+
+                    //------------------------------------------
+                    // ファイルをコピーして更新日時を変更する
+                    //------------------------------------------
+                    try {
+                        Path outFile;
+                        if (outDir.equals(imgDir)) {
+                            outFile = jpgFile;
+                        }
+                        else {
+                            outFile = Paths.get(outDir.toString(), jpgFile.toFile().getName());
+                            Files.copy(jpgFile, outFile);
+                        }
+                        outFile.toFile().setLastModified(cal.getTimeInMillis());
+                    }
+                    catch (Exception e) {
+                        System.out.println("[ERROR] Can not convert."+ e.toString());
+                    }
                 }
                 System.out.println("-------------------------------");
             }
