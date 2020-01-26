@@ -7,7 +7,6 @@ import java.io.File;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
-import osm.surveyor.matchtime.AppParameters;
 
 @SuppressWarnings("serial")
 public class ParameterPanelGpx extends ParameterPanel implements ActionListener
@@ -66,34 +65,8 @@ public class ParameterPanelGpx extends ParameterPanel implements ActionListener
         return null;
     }
     
-    /**
-     * "セグメント'trkseg'の最初の１ノードは無視する。"
-     * @param label         テキスト
-     * @param params        プロパティ
-     */
-    public void addNoFirstNode(String label, AppParameters params) {
-        boolean selected = false;
-        if (params.getProperty(AppParameters.GPX_NO_FIRST_NODE).equals("true")) {
-            selected = true;
-        }
-        noFirstNode = new JCheckBox(label, selected);
-    }
-    
     public boolean isNoFirstNodeSelected() {
         return (noFirstNode != null) && noFirstNode.isSelected();
-    }
-    
-    /**
-     * "生成されたGPXファイル（ファイル名が'_.gpx'で終わるもの）も変換の対象にする"
-     * @param label         テキスト
-     * @param params        プロパティ
-     */
-    public void addGpxReuse(String label, AppParameters params) {
-        boolean selected = false;
-        if (params.getProperty(AppParameters.GPX_REUSE).equals("true")) {
-            selected = true;
-        }
-        gpxReuse = new JCheckBox(label, selected);
     }
     
     public boolean isGpxReuseSelected() {

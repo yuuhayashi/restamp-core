@@ -17,7 +17,6 @@ import org.apache.commons.imaging.common.ImageMetadata;
 import org.apache.commons.imaging.formats.jpeg.JpegImageMetadata;
 import org.apache.commons.imaging.formats.tiff.TiffImageMetadata;
 import org.apache.commons.imaging.formats.tiff.constants.ExifTagConstants;
-import osm.surveyor.matchtime.AppParameters;
 import osm.surveyor.matchtime.Restamp;
 import static osm.surveyor.matchtime.gui.ReStamp.dfjp;
 import osm.surveyor.matchtime.gui.restamp.DialogCorectTime;
@@ -29,7 +28,6 @@ import osm.surveyor.matchtime.gui.restamp.DialogCorectTime;
 public class ParameterPanelTime extends ParameterPanel {
     SimpleDateFormat sdf = (SimpleDateFormat)DateFormat.getDateTimeInstance();
     ParameterPanelImageFile imageFile;  // 基準時刻画像
-    
     
     // 基準時刻の指定グループ (排他選択)
     public ButtonGroup baseTimeGroup = new ButtonGroup();
@@ -68,39 +66,10 @@ public class ParameterPanelTime extends ParameterPanel {
         return this;
     }
     
-    /**
-     * 「EXIFの日時を基準にする」
-     * @param label         テキスト
-     * @param params        プロパティ
-     */
-    public void addExifBase(String label, AppParameters params) {
-        boolean selected = false;
-        if (params.getProperty(AppParameters.GPX_BASETIME).equals("EXIF_TIME")) {
-            selected = true;
-        }
-        exifBase = new JRadioButton(label, selected);
-        baseTimeGroup.add(exifBase);
-    }
-
-    /**
-     * 「File更新日時を基準にする」
-     * @param label         テキスト
-     * @param params        プロパティ
-     */
-    public void addFileUpdate(String label, AppParameters params) {
-        boolean selected = false;
-        if (params.getProperty(AppParameters.GPX_BASETIME).equals("FILE_UPDATE")) {
-            selected = true;
-        }
-        fupdateBase = new JRadioButton(label, selected);
-        baseTimeGroup.add(fupdateBase);
-    }
-    
     public ParameterPanelImageFile getImageFile() {
         return this.imageFile;
     }
 
-    
     /**
      * [変更...]ボタンのアクション
      */
