@@ -1,6 +1,8 @@
 package osm.surveyor.matchtime;
 
-import java.io.File;
+import java.util.*;
+import java.io.*;
+import java.nio.file.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,6 +12,7 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.apache.commons.codec.digest.DigestUtils;
 import static org.junit.Assert.*;
 
 /**
@@ -33,11 +36,38 @@ public class RestampTest {
     public void setUp() {
         dirPath = "./src/test/data/images";
         outPath = "./out";
+        Path dir = Paths.get(outPath);
+        if (Files.exists(dir) && Files.isDirectory(dir) && Files.isWritable(dir)) {
+            try {
+                Files.delete(dir);
+            }
+            catch(Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
     
     @After
     public void tearDown() {
-        
+        try {
+            Path dir = Paths.get(outPath);
+            if (Files.exists(dir) && Files.isDirectory(dir) && Files.isWritable(dir)) {
+                Files.list(dir).forEach(f -> delFile(f));
+                Files.delete(dir);
+            }
+        }
+        catch(Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    public void delFile(Path p) {
+        try {
+            Files.delete(p);
+        }
+        catch(IOException e) {
+            e.printStackTrace();
+        };
     }
 
     String dirPath;
@@ -63,10 +93,13 @@ public class RestampTest {
                 "00001.jpg",
                 "2019-09-01 16:26:51 JST",
                 "00003.jpg",
-                "2019-09-01 16:27:01 JST"
+                "2019-09-01 16:27:01 JST",
+                outPath
             };
+            HashMap before = getMd5(Paths.get(dirPath));
             Restamp.main(argv);
-            check(new File(dirPath), ans);
+            check(new File(outPath), ans);
+            checkUnchanged(before, Paths.get(dirPath));
         }
         catch (Exception e) {
             fail();
@@ -209,7 +242,47 @@ public class RestampTest {
             assertThat(lastModifiedStr, is(ans[i]));
             i++;
         }
-        
+    }
+    
+    void checkUnchanged(HashMap<String,File> map, Path dir) {
+        assertThat(Files.isDirectory(dir), is(true));
+        try {
+            File[] files = dir.toFile().listFiles();
+            assertThat(files.length, is(map.size()));
+            
+            for (String key : map.keySet()) {
+                File sfile = map.get(key);
+                Path ofile = Paths.get(dir.toString(), sfile.getName());
+                assertNotNull(ofile);
+                
+                FileInputStream fis = new FileInputStream(ofile.toFile());
+                String md5 = DigestUtils.md5Hex(fis);
+                assertThat(key, is(md5));
+            }
+        }
+        catch (Exception e) {
+            fail();
+        }
+    }
+    
+    /**
+     * フォルダ内のファイルとファイルのMD5リストを作成
+     * @param dir
+     * @return 
+     */
+    HashMap<String,File> getMd5(Path dir) {
+        HashMap<String, File> map = new HashMap<>();
+        try {
+            File[] files = dir.toFile().listFiles();
+            for (File f : files) {
+                FileInputStream fis = new FileInputStream(f);
+                map.put(DigestUtils.md5Hex(fis), f);
+            }
+        }
+        catch (Exception e) {
+            fail();
+        }
+        return map;
     }
 
 }
