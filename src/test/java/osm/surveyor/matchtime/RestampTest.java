@@ -32,13 +32,16 @@ public class RestampTest {
     @Before
     public void setUp() {
         dirPath = "./src/test/data/images";
+        outPath = "./out";
     }
     
     @After
     public void tearDown() {
+        
     }
 
     String dirPath;
+    String outPath;
 
     @Test
     public void testMain() {
@@ -160,10 +163,43 @@ public class RestampTest {
         }
     }
     
+    @Test
+    public void testMain_5() {
+        String[] ans = {
+            "2019-09-04 16:26:53 JST",  // 0.0
+            "2019-09-04 16:26:55 JST",  // 2.0
+            "2019-09-04 16:26:58 JST",  // 3.0
+            "2019-09-04 16:27:00 JST",  // 2.0
+            "2019-09-04 16:27:03 JST",  // 3.0
+            "2019-09-04 16:27:05 JST",  // 2.0
+            "2019-09-04 16:27:08 JST",  // 3.0
+            "2019-09-04 16:27:10 JST",  // 2.0
+            "2019-09-04 16:27:13 JST",  // 3.0
+        };
+        
+        try {
+            String[] argv = new String[]{
+                dirPath,
+                "00003.jpg",
+                "2019-09-04 16:26:58 JST",
+                "00005.jpg",
+                "2019-09-04 16:27:03 JST",
+                outPath
+            };
+            Restamp.main(argv);
+            check(new File(outPath), ans);
+        }
+        catch (Exception e) {
+            fail();
+        }
+    }
+    
     void check(File imgDir, String[] ans) {
         DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
 
         File[] files = imgDir.listFiles();
+        assertThat(files.length, is(ans.length));
+        
         java.util.Arrays.sort(files, (File file1, File file2) -> file1.getName().compareTo(file2.getName()));
         
         int i = 0;

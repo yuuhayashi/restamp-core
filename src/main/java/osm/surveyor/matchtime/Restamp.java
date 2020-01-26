@@ -63,6 +63,7 @@ public class Restamp extends Thread {
      *  ```
      * 
      *  exp) $ java -jar Restamp.jar argv[0] argv[1] argv[2] argv[3] argv[4]
+     *  exp) $ java -jar Restamp.jar argv[0] argv[1] argv[2] argv[3] argv[4] argv[5]
      * 
      * @param argv
      * argv[0] = 画像ファイルが格納されているディレクトリ		--> imgDir
@@ -70,103 +71,137 @@ public class Restamp extends Thread {
      * argv[2] = 基準画像ファイルの精確な撮影日時 "yyyy-MM-dd HH:mm:ss z" --> baseTime1
      * argv[3] = 時刻補正の基準とする画像ファイル			--> baseFile2
      * argv[4] = 基準画像ファイルの精確な撮影日時 "yyyy-MM-dd HH:mm:ss z" --> baseTime2
+     * argv[5] = (option)変換済み画像ファイルの出力フォルダ.省略した場合は元画像を直接上書きする --> outputDir
      * @throws ImageReadException 
      */
     public static void main(String[] argv) throws Exception
     {
         if (argv.length < 5) {
-            System.out.println("java Restamp <imgDir> <baseFile1> <timeStr1> <baseFile2> <timeStr2>");
+            System.out.println("java osm.surveyor.matchtime.Restamp <imgDir> <baseFile1> <timeStr1> <baseFile2> <timeStr2>");
+            System.out.println("java osm.surveyor.matchtime.Restamp <imgDir> <baseFile1> <timeStr1> <baseFile2> <timeStr2> <output dir>");
             return;
         }
         
         Path imgDir = Paths.get(argv[0]);
-        if (!Files.exists(imgDir)) {
-            // "[error] <imgDir>が存在しません。"
-            System.out.println(i18n.getString("msg.200"));
-            return;
-        }
-        if (!Files.isDirectory(imgDir)) {
-            // "[error] <imgDir>がフォルダじゃない"
-            System.out.println(i18n.getString("msg.210"));
-            return;
+        
+        Path outDir = imgDir;
+        if (argv.length >= 6) {
+            outDir = Paths.get(argv[5]);
         }
         
         Path baseFile1 = Paths.get(imgDir.toString(), argv[1]);
-        if (!Files.exists(baseFile1)) {
-            // "[error] <baseFile1>が存在しません。"
-            System.out.println(i18n.getString("msg.220"));
-            return;
-        }
-        if (!Files.isRegularFile(baseFile1)) {
-            // "[error] <baseFile1>がファイルじゃない"
-            System.out.println(i18n.getString("msg.230"));
-            return;
-        }
         
         DateFormat df1 = new SimpleDateFormat(TIME_PATTERN);
     	Date baseTime1 = df1.parse(argv[2]);
+    	Date baseTime2 = df1.parse(argv[4]);
 
         Path baseFile2 = Paths.get(imgDir.toString(), argv[3]);
-        if (!Files.exists(baseFile2)) {
-            // "[error] <baseFile2>が存在しません。"
-            System.out.println(i18n.getString("msg.240"));
-            return;
-        }
-        if (!Files.isRegularFile(baseFile2)) {
-            // "[error] <baseFile2>がファイルじゃない"
-            System.out.println(i18n.getString("msg.250"));
-            return;
-        }
-        
-    	Date baseTime2 = df1.parse(argv[4]);
         
         Restamp obj = new Restamp();
-        obj.setUp(imgDir, baseFile1, baseTime1, baseFile2, baseTime2);
+        if (obj.setUp(imgDir, baseFile1, baseTime1, baseFile2, baseTime2, outDir)) {
+            obj.start();
+            try {
+                obj.join();
+            } catch(InterruptedException end) {}
+            if (obj.ex != null) {
+                throw obj.ex;
+            }
+        }
     }
     
     Path imgDir;
-    //Path outDir;
+    Path outDir;
     Date baseTime1;
     Date baseTime2;
     Path baseFile1;
     Path baseFile2;
     public static ResourceBundle i18n = ResourceBundle.getBundle("i18n");
 	
+    /**
+     * パラメータの設定とチェック
+     * @param imgDir
+     * @param baseFile1
+     * @param baseTime1
+     * @param baseFile2
+     * @param baseTime2
+     * @param outDir
+     * @return パラメータチェックに合格すればtrue
+     * @throws Exception 
+     */
     @SuppressWarnings("Convert2Lambda")
-    public void setUp(
+    public boolean setUp(
             Path imgDir, 
             Path baseFile1, Date baseTime1,  
-            Path baseFile2, Date baseTime2) throws Exception {
+            Path baseFile2, Date baseTime2,
+            Path outDir) throws Exception {
         this.imgDir = imgDir;
+        this.outDir = outDir;
         this.baseTime1 = baseTime1;
         this.baseTime2 = baseTime2;
         this.baseFile1 = baseFile1;
         this.baseFile2 = baseFile2;
         
-        /*
-        File outDir = new File(imgDir, "restamp.out");
-        if (outDir.exists()) {
-            // "[error] <outDir>が存在する。"
-            if (!outDir.isDirectory()) {
-                // "[error] <outDir>がフォルダじゃない"
+        // <imgDir:ソースフォルダ>のチェック
+        if (!Files.exists(imgDir)) {
+            // "[error] <imgDir>が存在しません。"
+            System.out.println(i18n.getString("msg.200"));
+            return false;
+        }
+        if (!Files.isDirectory(imgDir)) {
+            // "[error] <imgDir>がフォルダじゃない"
+            System.out.println(i18n.getString("msg.210"));
+            return false;
+        }
+        
+        // <outDir>のチェック
+        if (Files.exists(outDir)) {
+            if (!Files.isDirectory(outDir)) {
+                // "[error] <出力先フォルダ>はフォルダじゃない"
                 System.out.println(i18n.getString("msg.270"));
-                return;
+                return false;
             }
         }
         else {
-            // "<outDir>が存在しない。"
-            outDir.mkdir();
+            // "[error] <outDir>は存在しません。"
+            try {
+                Files.createDirectories(outDir);
+            }
+            catch (IOException e) {
+                System.out.println(i18n.getString("msg.275"));
+                return false;
+            }
         }
-        this.outDir = outDir;
-        */
+        if (!Files.isWritable(outDir)) {
+            // "[error] <出力先フォルダ>には書き込みできません"
+            System.out.println(i18n.getString("msg.275"));
+            return false;
+        }
         
-        this.start();
-        try {
-            this.join();
-        } catch(InterruptedException end) {}
-        if (this.ex != null) {
-            throw this.ex;
+        // <baseFile1>のチェック
+        if (!Files.exists(baseFile1)) {
+            // "[error] <baseFile1>が存在しません。"
+            System.out.println(i18n.getString("msg.220"));
+            return false;
         }
+        if (!Files.isRegularFile(baseFile1)) {
+            // "[error] <baseFile1>がファイルじゃない"
+            System.out.println(i18n.getString("msg.230"));
+            return false;
+        }
+
+        // <baseFile2>のチェック
+        if (!Files.exists(baseFile2)) {
+            // "[error] <baseFile2>が存在しません。"
+            System.out.println(i18n.getString("msg.240"));
+            return false;
+        }
+        if (!Files.isRegularFile(baseFile2)) {
+            // "[error] <baseFile2>がファイルじゃない"
+            System.out.println(i18n.getString("msg.250"));
+            return false;
+        }
+        
+        return true;
     }
     
     @Override
