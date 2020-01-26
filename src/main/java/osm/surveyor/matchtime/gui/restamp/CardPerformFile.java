@@ -70,7 +70,7 @@ public class CardPerformFile extends Card  implements PanelAction {
         // [処理実行]ボタン
         doButton = new JButton(
             i18n.getString("button.execute"),
-            ReStamp.createImageIcon("images/media_playback_start.png")
+            ReStamp.createImageIcon("/images/media_playback_start.png")
         );
         argsPanel.add(doButton);
                 

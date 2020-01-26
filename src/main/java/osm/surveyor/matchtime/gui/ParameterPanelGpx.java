@@ -28,7 +28,7 @@ public class ParameterPanelGpx extends ParameterPanel implements ActionListener
         // "選択..."
         selectButton = new JButton(
                 i18n.getString("button.select"), 
-                ReStamp.createImageIcon("images/Open16.gif")
+                ReStamp.createImageIcon("/images/Open16.gif")
         );
         selectButton.addActionListener(this);
         this.add(selectButton);

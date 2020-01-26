@@ -87,11 +87,11 @@ public class DialogCorectTime extends JDialog implements PanelAction {
         // 画像ファイル選択ダイアログを起動するボタン
         JPanel buttonPanel = new JPanel();
         buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.X_AXIS));
-        expandButton = new JButton(createImageIcon(java.util.ResourceBundle.getBundle("i18n_ja_JP").getString("IMAGES/FIT16.GIF")));
+        expandButton = new JButton(createImageIcon("/images/Fit16.gif"));
         buttonPanel.add(expandButton);
-        zoomInButton = new JButton(createImageIcon("images/ZoomIn16.gif"));
+        zoomInButton = new JButton(createImageIcon("/images/ZoomIn16.gif"));
         buttonPanel.add(zoomInButton);
-        zoomOutButton = new JButton(createImageIcon("images/ZoomOut16.gif"));
+        zoomOutButton = new JButton(createImageIcon("/images/ZoomOut16.gif"));
         buttonPanel.add(zoomOutButton);
         centerPanel.add(buttonPanel, BorderLayout.SOUTH);
         
