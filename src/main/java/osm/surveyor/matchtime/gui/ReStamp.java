@@ -122,25 +122,95 @@ public class ReStamp extends JFrame
         
         cards = new Card[4];
         int cardNo = 0;
-
+        
         //---------------------------------------------------------------------
         // 1.[対象フォルダ]設定パネル
         {
             arg1_srcFolder = new ParameterPanelFolder(
-                    i18n.getString("label.110") +": ", 
-                    params.getProperty(AppParameters.IMG_SOURCE_FOLDER)
+                i18n.getString("label.110") +": ", 
+                params.getProperty(AppParameters.IMG_SOURCE_FOLDER)
             );
-            arg1_srcFolder.argField
-                .getDocument()
-                .addDocumentListener(
-                    new SimpleDocumentListener() {
-                        @Override
-                        public void update(DocumentEvent e) {
-                            toEnable(0, arg1_srcFolder.isEnable());
-                        }
+            arg1_srcFolder.argField.getDocument().addDocumentListener(
+                new SimpleDocumentListener() {
+                    @Override
+                    public void update(DocumentEvent e) {
+                        toEnable(0, arg1_srcFolder.isEnable());
                     }
-                );
+                }
+            );
+        }
 
+        //---------------------------------------------------------------------
+        // 2a. 基準時刻画像
+        {
+            arg2_baseTimeImg = new ParameterPanelImageFile(
+                i18n.getString("label.210") +": ", 
+                null, 
+                arg1_srcFolder
+            );
+
+            // 2a. 基準時刻:
+            arg2_basetime = new ParameterPanelTime(
+                i18n.getString("label.310"), 
+                null, 
+                arg2_baseTimeImg
+            );
+            arg2_basetime.argField.getDocument().addDocumentListener(
+                new SimpleDocumentListener() {
+                    @Override
+                    public void update(DocumentEvent e) {
+                        toEnable(1, arg2_basetime.isEnable());
+                    }
+                }
+            );
+        }
+
+        //---------------------------------------------------------------------
+        // 3a. 基準時刻画像
+        {
+            arg3_baseTimeImg = new ParameterPanelImageFile(
+                i18n.getString("label.210") +": ", 
+                null, 
+                arg1_srcFolder
+            );
+
+            // 3a. 基準時刻:
+            arg3_basetime = new ParameterPanelTime(
+                i18n.getString("label.310"), 
+                null, 
+                arg3_baseTimeImg
+            );
+            arg3_basetime.argField.getDocument().addDocumentListener(
+                new SimpleDocumentListener() {
+                    @Override
+                    public void update(DocumentEvent e) {
+                        toEnable(2, arg3_basetime.isEnable());
+                    }
+                }
+            );
+        }
+
+        //---------------------------------------------------------------------
+        // 4. "出力フォルダ: "
+        {
+            arg4_output = new ParameterPanelOutput(
+                i18n.getString("label.530") + ": ", 
+                params.getProperty(AppParameters.IMG_OUTPUT_FOLDER)
+            );
+            arg4_output.addCheckOverwriteToSource(i18n.getString("label.110"));
+            arg4_output.argField.getDocument().addDocumentListener(
+                new SimpleDocumentListener() {
+                    @Override
+                    public void update(DocumentEvent e) {
+                        toEnable(3, arg4_output.isEnable());
+                    }
+                }
+            );
+        }
+
+        //---------------------------------------------------------------------
+        // 1.[対象フォルダ]設定パネル
+        {
             Card card = new CardSourceFolder(cardPanel, arg1_srcFolder);
             cardPanel.addTab(card.getTitle(), card);
             cardPanel.setEnabledAt(cardNo, true);
@@ -153,28 +223,6 @@ public class ReStamp extends JFrame
         // 2.[基準時刻画像]設定パネル
         // 2a.基準時刻の入力画面
         {
-            // 基準時刻画像
-            arg2_baseTimeImg = new ParameterPanelImageFile(
-                i18n.getString("label.210") +": ", 
-                null, 
-                arg1_srcFolder
-            );
-
-            // 2a. 基準時刻:
-            arg2_basetime = new ParameterPanelTime(
-                    i18n.getString("label.310"), 
-                    null, 
-                    arg2_baseTimeImg
-            );
-            arg2_basetime.argField.getDocument().addDocumentListener(
-                new SimpleDocumentListener() {
-                    @Override
-                    public void update(DocumentEvent e) {
-                        toEnable(1, arg2_basetime.isEnable());
-                    }
-                }
-            );
-            
             CardImageFile card = new CardImageFile(
                     cardPanel, arg2_basetime, (Window)this, 
                     ReStamp.i18n.getString("tab.restamp.200"), 0, 2);
@@ -187,28 +235,6 @@ public class ReStamp extends JFrame
         //---------------------------------------------------------------------
         // 3. 最終画像の本当の時刻を設定の入力画面
         {
-            // 基準時刻画像
-            arg3_baseTimeImg = new ParameterPanelImageFile(
-                i18n.getString("label.210") +": ", 
-                null, 
-                arg1_srcFolder
-            );
-            
-            // 3a. 基準時刻:
-            arg3_basetime = new ParameterPanelTime(
-                    i18n.getString("label.310"), 
-                    null, 
-                    arg3_baseTimeImg
-            );
-            arg3_basetime.argField.getDocument().addDocumentListener(
-                new SimpleDocumentListener() {
-                    @Override
-                    public void update(DocumentEvent e) {
-                        toEnable(2, arg3_basetime.isEnable());
-                    }
-                }
-            );
-            
             CardImageFile card = new CardImageFile(
                 cardPanel, arg3_basetime, (Window)this, 
                 ReStamp.i18n.getString("tab.restamp.250"), 1, 3
@@ -222,20 +248,6 @@ public class ReStamp extends JFrame
         //---------------------------------------------------------------------
         // ４. 実行画面
         {
-            // 4. "出力フォルダ: "
-            arg4_output = new ParameterPanelOutput(
-                i18n.getString("label.530") + ": ", 
-                params.getProperty(AppParameters.IMG_OUTPUT_FOLDER)
-            );
-            arg4_output.argField.getDocument().addDocumentListener(
-                new SimpleDocumentListener() {
-                    @Override
-                    public void update(DocumentEvent e) {
-                        toEnable(3, arg4_output.isEnable());
-                    }
-                }
-            );
-            
             // パネル表示
             CardPerformFile card = new CardPerformFile(
                     cardPanel, 

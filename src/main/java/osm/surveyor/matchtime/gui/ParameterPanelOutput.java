@@ -2,7 +2,6 @@ package osm.surveyor.matchtime.gui;
 
 import javax.swing.JCheckBox;
 import javax.swing.JFileChooser;
-import osm.surveyor.matchtime.AppParameters;
 
 @SuppressWarnings("serial")
 public class ParameterPanelOutput extends ParameterPanelFolder
@@ -22,33 +21,28 @@ public class ParameterPanelOutput extends ParameterPanelFolder
     /**
      * チェックボックス "入力ファイルに上書きする"
      * @param label
-     * @param params 
      */
-    public void addCheckOverwriteToSource(String label, AppParameters params) {
+    public void addCheckOverwriteToSource(String label) {
         boolean selected = false;
-        if (params.getProperty(AppParameters.OUTPUT_OVERWRITE_TO_SOURCE).equals("true")) {
-            selected = true;
-        }
         outputOverwite = new JCheckBox(label, selected);
         outputOverwite.setEnabled(true);
+        outputOverwite.addActionListener(new ChangeOverwriteAction());
+        this.add(outputOverwite);
     }
 
     /**
      * checkbox[入力ファイルに上書き]を変更した場合のアクション
-     * 	ON ー＞ IMG出力フォルダのフィールドを有効にする
-     *  OFF -> IMG出力フォルダのフィールドを無効にする
+     * 	OFF → IMG出力フォルダのフィールドを有効にする
+     *  ON → IMG出力フォルダのフィールドを無効にする
      * @param event
      */
-    /*
-    
     class ChangeOverwriteAction implements java.awt.event.ActionListener {
         @Override
         public void actionPerformed(java.awt.event.ActionEvent event) {
             Object object = event.getSource();
             if (object == outputOverwite) {
-                setEnabled(outputIMG.isEnabled());
+                //setEnabled(outputIMG.isEnabled());
             }
         }
     }
-    */
 }
