@@ -13,7 +13,8 @@ import static osm.surveyor.matchtime.gui.ReStamp.i18n;
  * @author yuu
  */
 public class CardGpxFile extends Card  implements PanelAction {
-    ParameterPanelGpx arg_gpxFile;
+	private static final long serialVersionUID = -8899524266392178269L;
+	ParameterPanelGpx arg_gpxFile;
     
     /**
      * コンストラクタ
@@ -67,7 +68,6 @@ public class CardGpxFile extends Card  implements PanelAction {
     }
     
     @Override
-    @SuppressWarnings("empty-statement")
     public void openAction() {
        ; // 何もしない
     }

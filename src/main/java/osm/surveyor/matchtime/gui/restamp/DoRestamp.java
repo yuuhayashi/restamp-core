@@ -28,13 +28,11 @@ public class DoRestamp extends JDialog {
     JTextArea textArea;      // 実行結果を表示するJTextArea	(中央)
     //}}
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public DoRestamp(String[] args) {
         super();   // 親フォームなしのモーダルダイアログを基盤にする
         this.args = args;
                 
         // INIT_CONTROLS
-        @SuppressWarnings("OverridableMethodCallInConstructor")
         Container container = getContentPane();
         container.setLayout(new BorderLayout());
         setSize(getInsets().left + getInsets().right + 980, getInsets().top + getInsets().bottom + 480);
@@ -180,7 +178,6 @@ public class DoRestamp extends JDialog {
 
         // 非同期に行われる処理
         @Override
-        @SuppressWarnings("SleepWhileInLoop")
         public Object doInBackground() {
             // ながーい処理
             PrintStream defOut = System.out;

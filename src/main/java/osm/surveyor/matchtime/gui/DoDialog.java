@@ -27,16 +27,13 @@ public class DoDialog extends JDialog {
     JTextArea textArea;      // 実行結果を表示するJTextArea	(中央)
     //}}
 
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public DoDialog(String[] args) {
         super();   // モーダルダイアログを基盤にする
         this.args = args;
                 
         // INIT_CONTROLS
-        @SuppressWarnings("OverridableMethodCallInConstructor")
         Container container = getContentPane();
         container.setLayout(new BorderLayout());
-        //parentFrame.setVisible(false);
         setSize(getInsets().left + getInsets().right + 980, getInsets().top + getInsets().bottom + 480);
         setTitle(DoDialog.TITLE);
         
@@ -84,9 +81,6 @@ public class DoDialog extends JDialog {
         catch (Exception e) {
             System.out.println(e.toString());
         }
-
-        // JFrameの表示
-        //parentFrame.setVisible(true);
     }
     
     /**
@@ -183,7 +177,6 @@ public class DoDialog extends JDialog {
 
         // 非同期に行われる処理
         @Override
-        @SuppressWarnings("SleepWhileInLoop")
         public Object doInBackground() {
             // ながーい処理
             PrintStream defOut = System.out;

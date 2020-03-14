@@ -128,7 +128,6 @@ public class Restamp extends Thread {
      * @return パラメータチェックに合格すればtrue
      * @throws Exception 
      */
-    @SuppressWarnings("Convert2Lambda")
     public boolean setUp(
             Path imgDir, 
             Path baseFile1, Date baseTime1,  
@@ -212,9 +211,8 @@ public class Restamp extends Thread {
         boolean base2 = false;
         ArrayList<Path> jpgFiles = new ArrayList<>();
 
-        try {
-            // 指定されたディレクトリ内のJPEGファイルすべてを対象とする
-            Stream<Path> files = Files.list(Paths.get(imgDir.toString()));
+        // 指定されたディレクトリ内のJPEGファイルすべてを対象とする
+        try (Stream<Path> files = Files.list(Paths.get(imgDir.toString()))){
             List<Path> sortedList = files.sorted(Comparator.naturalOrder()).collect(Collectors.toList());
 
             for (Path p : sortedList) {
@@ -237,7 +235,6 @@ public class Restamp extends Thread {
                 DateFormat df2 = new SimpleDateFormat(TIME_PATTERN);
 
                 // imgDir内の画像ファイルを処理する
-                @SuppressWarnings("LocalVariableHidesMemberVariable")
                 long span = this.baseTime2.getTime() - this.baseTime1.getTime();
                 span = span / (bCount2 - bCount1);
                 int i = 0;

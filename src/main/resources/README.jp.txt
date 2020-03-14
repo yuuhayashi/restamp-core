@@ -26,9 +26,9 @@ GPSログの記録時刻とデジカメの撮影時刻とを見比べて、GPS�
 http://sourceforge.jp/projects/importpicture/wiki/FrontPage
 
 [起動]
-下記のように'AdjustTime'を起動するとGUIでパラメータを逐次設定可能です。（推奨起動方法）
+下記のように'ReStamp'を起動するとGUIでパラメータを逐次設定可能です。（推奨起動方法）
 
-> java -cp .:AdjustTime2.jar:commons-imaging-1.0-SNAPSHOT.jar osm.jp.gpx.matchtime.gui.AdjustTime
+> java -jar ReStamp.jar osm.surveyor.matchtime.gui.ReStamp
 
 
 下記のコマンドラインによる起動方式は度重なる機能追加によりパラメーターが増大したため複雑になりすぎ作者でさえわけがわからなくなりました。

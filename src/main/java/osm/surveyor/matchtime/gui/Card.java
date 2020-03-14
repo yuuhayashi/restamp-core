@@ -13,7 +13,8 @@ import javax.swing.JTabbedPane;
 import static osm.surveyor.matchtime.gui.ReStamp.i18n;
 
 public class Card extends JPanel {
-    JTabbedPane tabbe;
+	private static final long serialVersionUID = 8530672831582833489L;
+	JTabbedPane tabbe;
     public JPanel mainPanel;
     String title;
     int backNumber = -1;

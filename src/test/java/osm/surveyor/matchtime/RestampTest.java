@@ -96,7 +96,7 @@ public class RestampTest {
                 "2019-09-01 16:27:01 JST",
                 outPath
             };
-            HashMap before = getMd5(Paths.get(dirPath));
+            HashMap<String, File> before = getMd5(Paths.get(dirPath));
             Restamp.main(argv);
             check(new File(outPath), ans);
             checkUnchanged(before, Paths.get(dirPath));

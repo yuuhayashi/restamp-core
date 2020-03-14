@@ -18,7 +18,7 @@ public class ParameterPanelSelecter extends JPanel implements ActionListener {
     public JComboBox<String> field;
     public String value;
 
-    @SuppressWarnings({"OverridableMethodCallInConstructor", "LeakingThisInConstructor"})
+    @SuppressWarnings({})
     public ParameterPanelSelecter(String title, String[] items) {
         super(null);
         this.value = items[0];

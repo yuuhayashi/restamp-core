@@ -20,7 +20,7 @@ import osm.surveyor.matchtime.gui.ParameterPanelTime;
  * @author yuu
  */
 public class CardPerformFile extends Card  implements PanelAction {
-    //JPanel argsPanel;		// パラメータ設定パネル	(上部)
+	private static final long serialVersionUID = 4781494884268871662L;
     ParameterPanelTime arg1_basetime;
     ParameterPanelTime arg2_basetime;
     ParameterPanelOutput arg_output;        // EXIF & 書き出しフォルダ
@@ -96,7 +96,6 @@ public class CardPerformFile extends Card  implements PanelAction {
      * [実行]ボタンをクリックしたときの動作
      * @param event
      */
-    @SuppressWarnings("UseSpecificCatch")
     void doButton_Action(java.awt.event.ActionEvent event) {
     	doButton.setEnabled(false);
         
@@ -127,7 +126,6 @@ public class CardPerformFile extends Card  implements PanelAction {
     }
     
     @Override
-    @SuppressWarnings("empty-statement")
     public void openAction() {
        ; // 何もしない
     }

@@ -19,8 +19,8 @@ import osm.surveyor.matchtime.gui.restamp.CardSourceFolder;
 public class ReStamp extends JFrame
 {
     public static final String PROGRAM_NAME = "ReStamp for Movie2jpeg";
-    public static final String PROGRAM_VARSION = "3.00a";
-    public static final String PROGRAM_UPDATE = "2020-01-19";
+    public static final String PROGRAM_VARSION = "3.01a";
+    public static final String PROGRAM_UPDATE = "2020-02-11";
 
     AppParameters params;
     public static SimpleDateFormat dfjp = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss Z");
@@ -84,12 +84,11 @@ public class ReStamp extends JFrame
      * データベース内のテーブルを一覧で表示するFrame
      * @throws IOException 
      */
-    @SuppressWarnings("OverridableMethodCallInConstructor")
     public ReStamp() throws IOException
     {
         dfjp.setTimeZone(TimeZone.getTimeZone("JST"));
 
-        // INIT_CONTROLS
+        // INIT_CONTROLS"sync-override"
         Container container = getContentPane();
         container.setLayout(new BorderLayout());
         setSize(
@@ -311,8 +310,7 @@ public class ReStamp extends JFrame
      * このクラスをインスタンスを生成して表示する。
      * コマンドラインの引数はありません。
      * @param args
-     */    
-    @SuppressWarnings("UseSpecificCatch")
+     */
     static public void main(String args[]) {
     	SwingUtilities.invokeLater(() -> {
             try {
