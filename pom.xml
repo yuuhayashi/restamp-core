@@ -72,32 +72,6 @@
     <defaultGoal>install</defaultGoal>
     
     <plugins>
-      <!-- 実行可能jarファイル用のプラグイン -->
-      <plugin>
-          <artifactId>maven-assembly-plugin</artifactId>
-          <version>3.2.0</version>
-          <configuration>
-              <descriptorRefs>
-                  <!-- 依存するリソースをすべてjarに同梱する -->
-                  <descriptorRef>jar-with-dependencies</descriptorRef>
-              </descriptorRefs>
-              <archive>
-                  <manifest>
-                      <mainClass>osm.surveyor.matchtime.gui.ReStamp</mainClass>
-                  </manifest>
-              </archive>
-          </configuration>
-          <executions>
-              <execution>
-                  <id>make-assembly</id> <!-- this is used for inheritance merges -->
-                  <phase>package</phase> <!-- bind to the packaging phase -->
-                  <goals>
-                      <goal>single</goal>
-                  </goals>
-              </execution>
-          </executions>
-      </plugin>
-
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-site-plugin</artifactId>
