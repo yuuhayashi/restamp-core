@@ -34,8 +34,8 @@ public class RestampTest {
     
     @Before
     public void setUp() {
-        dirPath = "./src/test/data/images";
-        outPath = "./out";
+        dirPath = "./target/test-classes/data/images";
+        outPath = "./target/test-classes/out";
         Path dir = Paths.get(outPath);
         if (Files.exists(dir) && Files.isDirectory(dir) && Files.isWritable(dir)) {
             try {
