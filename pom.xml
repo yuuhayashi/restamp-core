@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>osm.surveyor</groupId>
   <artifactId>ReStamp</artifactId>
-  <version>3.1</version>
+  <version>3.2-SNAPSHOT</version>
   <packaging>jar</packaging>
   <scm>
     <connection>scm:git:http://surveyor.mydns.jp/gitbucket/git/yuu/Restamp.git</connection>
     <url>http://surveyor.mydns.jp/gitbucket/yuu/Restamp/wiki</url>
     <developerConnection>scm:git:http://surveyor.mydns.jp/gitbucket/git/yuu/Restamp.git</developerConnection>
-    <tag>v3.1</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>
