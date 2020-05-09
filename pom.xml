@@ -38,13 +38,15 @@
   </distributionManagement>
 
   <dependencies>
+    <!-- 
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-imaging</artifactId>
       <version>1.0-alpha1</version>
       <type>jar</type>
     </dependency>
-
+ -->
+ 
     <!-- for JUnit test -->
     <dependency>
       <groupId>org.hamcrest</groupId>

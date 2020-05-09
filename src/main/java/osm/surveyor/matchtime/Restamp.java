@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import org.apache.commons.imaging.ImageReadException;
 
 /**
  * 動画から一定間隔で切り出したIMAGEファイルの更新日時を書き換える
