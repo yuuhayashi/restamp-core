@@ -9,7 +9,7 @@ import java.util.Properties;
 
 @SuppressWarnings("serial")
 public class AppParameters extends Properties {
-    static final String FILE_PATH = "AdjustTime.ini";
+    static final String FILE_PATH = "ReStamp.properties";
 
     // GPX: ファイル更新時刻 yyyy:MM:dd HH:mm:ss
     public static String IMG_TIME = "IMG.TIME";
@@ -92,7 +92,7 @@ public class AppParameters extends Properties {
         if (update) {
             // ・ファイルがなければ新たに作る
             // ・項目が足りない時は書き足す。
-            //this.store(new FileOutputStream(this.file), "defuilt settings");
+            this.store(new FileOutputStream(this.file), "defuilt settings");
         }
     }
 
