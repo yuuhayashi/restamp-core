@@ -57,8 +57,7 @@ public class Restamp extends Thread {
      * 
      *  2. ファイルの更新日付を書き換える
      *  ```
-     *  $ cd /home/yuu/Desktop/workspace/AdjustTime/importPicture/dist
-     *  $ java -cp .:AdjustTime2.jar osm.jp.gpx.Restamp /home/yuu/Desktop/OSM/20180325_横浜新道/img 000033.jpg 2018-03-25_12:20:32 003600.jpg  2018-03-25_13:20:09
+     *  $ java -cp .:ReStamp.jar osm.jp.gpx.Restamp /home/yuu/Desktop/OSM/20180325_横浜新道/img 000033.jpg 2018-03-25_12:20:32 003600.jpg  2018-03-25_13:20:09
      *  ```
      * 
      *  exp) $ java -jar Restamp.jar argv[0] argv[1] argv[2] argv[3] argv[4]
@@ -67,9 +66,9 @@ public class Restamp extends Thread {
      * @param argv
      * argv[0] = 画像ファイルが格納されているディレクトリ		--> imgDir
      * argv[1] = 時刻補正の基準とする画像ファイル			--> baseFile1
-     * argv[2] = 基準画像ファイルの精確な撮影日時 "yyyy-MM-dd HH:mm:ss z" --> baseTime1
+     * argv[2] = 基準画像ファイルの精確な撮影日時 "yyyy-MM-dd HH:mm:ss JST" --> baseTime1
      * argv[3] = 時刻補正の基準とする画像ファイル			--> baseFile2
-     * argv[4] = 基準画像ファイルの精確な撮影日時 "yyyy-MM-dd HH:mm:ss z" --> baseTime2
+     * argv[4] = 基準画像ファイルの精確な撮影日時 "yyyy-MM-dd HH:mm:ss JST" --> baseTime2
      * argv[5] = (option)変換済み画像ファイルの出力フォルダ.省略した場合は元画像を直接上書きする --> outputDir
      * @throws ImageReadException 
      */

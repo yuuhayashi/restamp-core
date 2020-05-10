@@ -12,6 +12,10 @@
     <tag>HEAD</tag>
   </scm>
 
+  <!-- プロジェクトの名前、ロゴ、URL(右上) -->
+  <name>ReStamp</name>
+  <url>http://surveyor.mydns.jp/gitbucket/yuu/Restamp/wiki</url>
+
   <licenses>
     <license>
       <name>MIT License</name>
@@ -34,10 +38,6 @@
     <maven.compiler.target>${java.version}</maven.compiler.target>
   </properties>
     
-  <!-- プロジェクトの名前、ロゴ、URL(右上) -->
-  <name>ReStamp</name>
-  <url>http://surveyor.mydns.jp/gitbucket/yuu/Restamp/wiki</url>
-
   <!-- DEPLOY先の指定  mvn deploy -->
   <distributionManagement>
     <repository>
@@ -66,6 +66,13 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
+      <scope>test</scope>
+      <type>jar</type>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-compress</artifactId>
+      <version>1.14</version>
       <scope>test</scope>
       <type>jar</type>
     </dependency>
