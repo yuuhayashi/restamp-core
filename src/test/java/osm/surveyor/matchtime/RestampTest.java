@@ -38,7 +38,7 @@ public class RestampTest {
     	tearDown();
     	
         // カメラディレクトリを作成する
-        UnZip.uncompress(new File("./target/test-classes/data/images.tar.gz"), new File("./target/test-classes/"));
+        UnZip.uncompress(new File("target/test-classes/data/images.tar.gz"), new File("target/test-classes/"));
 
         // OUTディレクトリを作成する
         File outDir = new File("target/test-classes/out");

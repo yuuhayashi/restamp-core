@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>osm.surveyor</groupId>
   <artifactId>ReStamp</artifactId>
-  <version>3.9-SNAPSHOT</version>
+  <version>3.6-SNAPSHOT</version>
   <packaging>jar</packaging>
   <scm>
     <connection>scm:git:http://surveyor.mydns.jp/gitbucket/git/yuu/Restamp.git</connection>
@@ -142,6 +142,7 @@
           <trimStackTrace>false</trimStackTrace>
         </configuration>
       </plugin>
+      
       <plugin>
         <groupId>org.jacoco</groupId>
         <artifactId>jacoco-maven-plugin</artifactId>
@@ -154,7 +155,6 @@
           </execution>
           <execution>
             <id>default-report</id>
-            <phase>test</phase>
             <goals>
               <goal>report</goal>
             </goals>
