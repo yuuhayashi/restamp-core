@@ -40,10 +40,8 @@ public class RestampTest {
     }
     
     static void setUp() throws IOException {
-    	tearDown();
-    	
         // カメラディレクトリを作成する
-        UnZip.uncompress(Paths.get("target/test-classes/data/images.tar.gz"), Paths.get("target/test-classes/"));
+        UnZip.uncompress(Paths.get("target/test-classes/images.tar.gz"), Paths.get("target/test-classes/"));
 
         // OUTディレクトリを作成する
         Files.createDirectories(Paths.get("target/test-classes/out"));
