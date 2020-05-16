@@ -3,13 +3,13 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>osm.surveyor</groupId>
   <artifactId>ReStamp</artifactId>
-  <version>3.8.2-SNAPSHOT</version>
+  <version>3.8.2</version>
   <packaging>jar</packaging>
   <scm>
     <connection>scm:git:http://surveyor.mydns.jp/gitbucket/git/yuu/Restamp.git</connection>
     <url>http://surveyor.mydns.jp/gitbucket/yuu/Restamp/wiki</url>
     <developerConnection>scm:git:http://surveyor.mydns.jp/gitbucket/git/yuu/Restamp.git</developerConnection>
-    <tag>v3.8.1</tag>
+    <tag>ReStamp-3.8.2</tag>
   </scm>
 
   <!-- プロジェクトの名前、ロゴ、URL(右上) -->
