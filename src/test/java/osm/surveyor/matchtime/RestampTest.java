@@ -2,11 +2,16 @@ package osm.surveyor.matchtime;
 
 import static org.junit.Assert.*;
 
-import java.io.*;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
+
+import haya4.tools.files.compless.UnZip;
 
 @RunWith(Theories.class)
 public class RestampTest {
@@ -38,25 +43,18 @@ public class RestampTest {
     	tearDown();
     	
         // カメラディレクトリを作成する
-        UnZip.uncompress(new File("target/test-classes/data/images.tar.gz"), new File("target/test-classes/"));
+        UnZip.uncompress(Paths.get("target/test-classes/data/images.tar.gz"), Paths.get("target/test-classes/"));
 
         // OUTディレクトリを作成する
-        File outDir = new File("target/test-classes/out");
-        outDir.mkdir();
+        Files.createDirectories(Paths.get("target/test-classes/out"));
     }
     
     static void tearDown() throws IOException {
         // IMGディレクトリを削除する
-        File dir = new File("target/test-classes/images");
-        if (dir.exists()) {
-            UnZip.delete(dir);
-        }
+        UnZip.delete(Paths.get("target/test-classes/images"));
         
         // OUTディレクトリを削除する
-        File outDir = new File("target/test-classes/out");
-        if (outDir.exists()) {
-        	UnZip.delete(outDir);
-        }
+        UnZip.delete(Paths.get("target/test-classes/out"));
     }
     
     
