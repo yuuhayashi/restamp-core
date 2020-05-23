@@ -18,7 +18,7 @@ This is a tool for collectively rewriting the ** file update time ** of still im
 
 ## Setup
 
-* [Setup](http://surveyor.mydns.jp/gitbucket/yuu/Restamp/wiki/Setup) 
+* [Setup](http://surveyor.mydns.jp/gitbucket/yuu/Restamp/wiki/Setup)
 
 
 ## Download
