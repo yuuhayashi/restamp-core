@@ -51,6 +51,14 @@
       <url>http://surveyor.mydns.jp/archiva/repository/snapshots/</url>
     </snapshotRepository>
   </distributionManagement>
+  
+  <repositories>
+    <repository>
+      <id>surveyor.haya4</id>
+      <name>Internal Release Repository</name>
+      <url>http://surveyor.mydns.jp/archiva/repository/haya4/</url>
+    </repository>
+  </repositories>
 
   <dependencies>
  
@@ -73,13 +81,6 @@
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <version>4.12</version>
-      <scope>test</scope>
-      <type>jar</type>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.commons</groupId>
-      <artifactId>commons-compress</artifactId>
-      <version>1.14</version>
       <scope>test</scope>
       <type>jar</type>
     </dependency>
