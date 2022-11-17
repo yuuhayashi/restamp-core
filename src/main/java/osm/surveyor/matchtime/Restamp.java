@@ -72,12 +72,12 @@ public class Restamp extends Thread {
      * argv[5] = (option)変換済み画像ファイルの出力フォルダ.省略した場合は元画像を直接上書きする --> outputDir
      * @throws ImageReadException 
      */
-    public static void main(String[] argv) throws Exception
+    public static boolean main(String[] argv) throws Exception
     {
         if (argv.length < 5) {
             System.out.println("java osm.surveyor.matchtime.Restamp <imgDir> <baseFile1> <timeStr1> <baseFile2> <timeStr2>");
             System.out.println("java osm.surveyor.matchtime.Restamp <imgDir> <baseFile1> <timeStr1> <baseFile2> <timeStr2> <output dir>");
-            return;
+            return false;
         }
         
         Path imgDir = Paths.get(argv[0]);
@@ -105,6 +105,10 @@ public class Restamp extends Thread {
                 throw obj.ex;
             }
         }
+        else {
+        	return false;
+        }
+        return true;
     }
     
     Path imgDir;
@@ -230,7 +234,7 @@ public class Restamp extends Thread {
                 }
             }
             if (!jpgFiles.isEmpty()) {
-                DateFormat df2 = new SimpleDateFormat(TIME_PATTERN);
+                DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS z");
 
                 // imgDir内の画像ファイルを処理する
                 long span = this.baseTime2.getTime() - this.baseTime1.getTime();
