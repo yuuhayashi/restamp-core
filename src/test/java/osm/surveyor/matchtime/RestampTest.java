@@ -34,8 +34,8 @@ public class RestampTest {
                 Files.createDirectories(Paths.get("target/test-classes/out"));
 
                 dataset.setUp();
-                Restamp.main(dataset.args);
-                dataset.check();
+                boolean ret = Restamp.main(dataset.args);
+                dataset.check(ret);
                 dataset.checkUnchanged();
                 
                 // IMGディレクトリを削除する

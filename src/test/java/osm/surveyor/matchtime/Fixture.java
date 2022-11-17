@@ -1,8 +1,10 @@
 package osm.surveyor.matchtime;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -22,14 +24,17 @@ import org.junit.experimental.theories.DataPoints;
 public class Fixture {
     String[] args;
     String[] ans;
+    boolean ret;
     HashMap<String, File> before;
 
     public Fixture(
         String[] args,
-        String[] ans
+        String[] ans,
+        Boolean ret
     ) {
         this.args = args;
         this.ans = ans;
+        this.ret = ret;
         this.before = new HashMap<>();
     }
     
@@ -54,7 +59,13 @@ public class Fixture {
      * @param imgDir
      * @param ans
      */
-    public void check() {
+    public void check(boolean ret) {
+    	if (this.ret) {
+    		assertTrue(ret);
+    	}
+    	else {
+    		assertFalse(ret);
+    	}
     	if (args.length > 5) {
         	String dirPath = args[0];
         	File imgDir = Paths.get(dirPath).toFile();
@@ -62,7 +73,7 @@ public class Fixture {
         		imgDir = Paths.get(args[5]).toFile();
         	}
         	
-            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+            DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS z");
 
             File[] files = imgDir.listFiles();
             assertThat(files.length, is(ans.length));
@@ -123,131 +134,174 @@ public class Fixture {
 
     @DataPoints
     public static Fixture[] datas = {
+    	// 0 : NG
 		new Fixture(
 			new String[]{},
-	        new String[] {}
+	        new String[] {},
+	        new Boolean(false)
 		),
+
+		// 1 : NG
 		new Fixture(
 			new String[]{
 				"./target/test-classes/images"
             },
 	        new String[] {
-                "2019-09-01 16:26:51 JST", 
-                "2019-09-01 16:26:56 JST", 
-                "2019-09-01 16:27:01 JST", 
-                "2019-09-01 16:27:06 JST", 
-                "2019-09-01 16:27:11 JST", 
-                "2019-09-01 16:27:16 JST", 
-                "2019-09-01 16:27:21 JST", 
-                "2019-09-01 16:27:26 JST", 
-                "2019-09-01 16:27:31 JST"
-	        }
+                "2019-09-01 16:26:51.000 JST", 
+                "2019-09-01 16:26:56.000 JST", 
+                "2019-09-01 16:27:01.000 JST", 
+                "2019-09-01 16:27:06.000 JST", 
+                "2019-09-01 16:27:11.000 JST", 
+                "2019-09-01 16:27:16.000 JST", 
+                "2019-09-01 16:27:21.000 JST", 
+                "2019-09-01 16:27:26.000 JST", 
+                "2019-09-01 16:27:31.000 JST"
+	        },
+	        new Boolean(false)
 		),
+		
+		// 2 : OK
 		new Fixture(
 			new String[]{
 				"./target/test-classes/images",
                 "00001.jpg",
-                "2019-09-01 16:26:51 JST",
+                "2019-09-02 16:26:51 JST",
                 "00003.jpg",
-                "2019-09-01 16:27:01 JST",
+                "2019-09-02 16:27:01 JST",
                 "./target/test-classes/out"
             },
 	        new String[] {
-                "2019-09-01 16:26:51 JST", 
-                "2019-09-01 16:26:56 JST", 
-                "2019-09-01 16:27:01 JST", 
-                "2019-09-01 16:27:06 JST", 
-                "2019-09-01 16:27:11 JST", 
-                "2019-09-01 16:27:16 JST", 
-                "2019-09-01 16:27:21 JST", 
-                "2019-09-01 16:27:26 JST", 
-                "2019-09-01 16:27:31 JST", 
-	        }
+                "2019-09-02 16:26:51.000 JST", 
+                "2019-09-02 16:26:56.000 JST", 
+                "2019-09-02 16:27:01.000 JST", 
+                "2019-09-02 16:27:06.000 JST", 
+                "2019-09-02 16:27:11.000 JST", 
+                "2019-09-02 16:27:16.000 JST", 
+                "2019-09-02 16:27:21.000 JST", 
+                "2019-09-02 16:27:26.000 JST", 
+                "2019-09-02 16:27:31.000 JST", 
+	        },
+	        new Boolean(true)
 		),
+		
+		// 3 : OK
 		new Fixture(
 			new String[]{
 				"./target/test-classes/images",
                 "00002.jpg",
-                "2019-09-02 16:26:56 JST",
+                "2019-09-03 16:26:56 JST",
                 "00004.jpg",
-                "2019-09-02 16:27:01 JST"
+                "2019-09-03 16:27:01 JST",
+                "./target/test-classes/out"
             },
 	        new String[] {
-                "2019-09-02 16:26:53 JST",  // 0.0 sec
-                "2019-09-02 16:26:56 JST",  // 3.0 sec
-                "2019-09-02 16:26:58 JST",  // 2.0 sec
-                "2019-09-02 16:27:01 JST",  // 3.0 sec
-                "2019-09-02 16:27:03 JST",  // 2.0 sec
-                "2019-09-02 16:27:06 JST",  // 3.0 sec
-                "2019-09-02 16:27:08 JST",  // 2.0 sec
-                "2019-09-02 16:27:11 JST",  // 3.0 sec
-                "2019-09-02 16:27:13 JST",  // 2.0 sec
-	        }
+                "2019-09-03 16:26:53.500 JST",  //  -2.5 sec
+                "2019-09-03 16:26:56.000 JST",  //   0.0 sec
+                "2019-09-03 16:26:58.500 JST",  //   2.5 sec
+                "2019-09-03 16:27:01.000 JST",  //   5.0 sec
+                "2019-09-03 16:27:03.500 JST",  //   7.5 sec
+                "2019-09-03 16:27:06.000 JST",  //  10.0 sec
+                "2019-09-03 16:27:08.500 JST",  //  12.5 sec
+                "2019-09-03 16:27:11.000 JST",  //  15.0 sec
+                "2019-09-03 16:27:13.500 JST",  //  17.5 sec
+	        },
+	        new Boolean(true)
 		),
+		
+		// 4 : OK
 		new Fixture(
 			new String[]{
 				"./target/test-classes/images",
                 "00001.jpg",
-                "2019-09-03 16:26:53 JST",
-                "00003.jpg",
-                "2019-09-03 16:26:58 JST"
-            },
-	        new String[] {
-                "2019-09-03 16:26:53 JST",  // 0.0
-                "2019-09-03 16:26:55 JST",  // 2.0
-                "2019-09-03 16:26:58 JST",  // 3.0
-                "2019-09-03 16:27:00 JST",  // 2.0
-                "2019-09-03 16:27:03 JST",  // 3.0
-                "2019-09-03 16:27:05 JST",  // 2.0
-                "2019-09-03 16:27:08 JST",  // 3.0
-                "2019-09-03 16:27:10 JST",  // 2.0
-                "2019-09-03 16:27:13 JST",  // 3.0
-	        }
-		),
-		
-		// 4
-		new Fixture(
-			new String[]{
-				"./target/test-classes/images",
+                "2019-09-04 16:26:53 JST",
                 "00003.jpg",
                 "2019-09-04 16:26:58 JST",
-                "00005.jpg",
-                "2019-09-04 16:27:03 JST"
-            },
-	        new String[] {
-                "2019-09-04 16:26:53 JST",  // 0.0
-                "2019-09-04 16:26:55 JST",  // 2.0
-                "2019-09-04 16:26:58 JST",  // 3.0
-                "2019-09-04 16:27:00 JST",  // 2.0
-                "2019-09-04 16:27:03 JST",  // 3.0
-                "2019-09-04 16:27:05 JST",  // 2.0
-                "2019-09-04 16:27:08 JST",  // 3.0
-                "2019-09-04 16:27:10 JST",  // 2.0
-                "2019-09-04 16:27:13 JST",  // 3.0
-	        }
-		),
-		
-		// 5
-		new Fixture(
-			new String[]{
-				"./target/test-classes/images",
-                "00003.jpg",
-                "2019-09-04 16:26:58 JST",
-                "00005.jpg",
-                "2019-09-04 16:27:03 JST",
                 "./target/test-classes/out"
             },
 	        new String[] {
-                "2019-09-04 16:26:53 JST",  // 0.0
-                "2019-09-04 16:26:55 JST",  // 2.0
-                "2019-09-04 16:26:58 JST",  // 3.0
-                "2019-09-04 16:27:00 JST",  // 2.0
-                "2019-09-04 16:27:03 JST",  // 3.0
-                "2019-09-04 16:27:05 JST",  // 2.0
-                "2019-09-04 16:27:08 JST",  // 3.0
-                "2019-09-04 16:27:10 JST",  // 2.0
-                "2019-09-04 16:27:13 JST",  // 3.0
-	        }
+                "2019-09-04 16:26:53.000 JST",  //  0.0
+                "2019-09-04 16:26:55.500 JST",  //  2.5
+                "2019-09-04 16:26:58.000 JST",  //  5.0
+                "2019-09-04 16:27:00.500 JST",  //  7.5
+                "2019-09-04 16:27:03.000 JST",  // 10.0
+                "2019-09-04 16:27:05.500 JST",  // 12.5
+                "2019-09-04 16:27:08.000 JST",  // 15.0
+                "2019-09-04 16:27:10.500 JST",  // 17.5
+                "2019-09-04 16:27:13.000 JST",  // 20.0
+	        },
+	        new Boolean(true)
+		),
+		
+		// 5 : OK
+		new Fixture(
+			new String[]{
+				"./target/test-classes/images",
+                "00003.jpg",
+                "2019-09-05 16:26:58 JST",
+                "00005.jpg",
+                "2019-09-05 16:27:03 JST",
+                "./target/test-classes/out"
+            },
+	        new String[] {
+                "2019-09-05 16:26:53.000 JST",  // 0.0
+                "2019-09-05 16:26:55.500 JST",  // 2.0
+                "2019-09-05 16:26:58.000 JST",  // 0.0
+                "2019-09-05 16:27:00.500 JST",  // 2.0
+                "2019-09-05 16:27:03.000 JST",  // 3.0
+                "2019-09-05 16:27:05.500 JST",  // 2.0
+                "2019-09-05 16:27:08.000 JST",  // 3.0
+                "2019-09-05 16:27:10.500 JST",  // 2.0
+                "2019-09-05 16:27:13.000 JST",  // 3.0
+	        },
+	        new Boolean(true)
+		),
+		
+		// 6 : OK
+		new Fixture(
+			new String[]{
+				"./target/test-classes/images",
+                "00003.jpg",
+                "2019-09-06 16:26:58 JST",
+                "IMG_0092.JPG",
+                "2019-09-06 16:26:59 JST",
+                "./target/test-classes/out"
+            },
+	        new String[] {
+                "2019-09-06 16:26:57.334 JST",  // 0.0
+                "2019-09-06 16:26:57.667 JST",  // 2.0
+                "2019-09-06 16:26:58.000 JST",  // 0.0
+                "2019-09-06 16:26:58.333 JST",  // 2.0
+                "2019-09-06 16:26:58.666 JST",  // 3.0
+                "2019-09-06 16:26:58.999 JST",  // 2.0
+                "2019-09-06 16:26:59.332 JST",  // 3.0
+                "2019-09-06 16:26:59.665 JST",  // 2.0
+                "2019-09-06 16:26:59.998 JST",  // 3.0
+	        },
+	        new Boolean(true)
+		),
+		
+		// 7 : OK
+		new Fixture(
+			new String[]{
+				"./target/test-classes/images",
+                "00003.jpg",
+                "2019-09-07 16:26:58 JST",
+                "00005.jpg",
+                "2019-09-07 16:27:03 JST",
+                "./target/test-classes/out"
+            },
+	        new String[] {
+                "2019-09-07 16:26:53.000 JST",  // 0.0
+                "2019-09-07 16:26:55.500 JST",  // 2.0
+                "2019-09-07 16:26:58.000 JST",  // 3.0
+                "2019-09-07 16:27:00.500 JST",  // 2.0
+                "2019-09-07 16:27:03.000 JST",  // 3.0
+                "2019-09-07 16:27:05.500 JST",  // 2.0
+                "2019-09-07 16:27:08.000 JST",  // 3.0
+                "2019-09-07 16:27:10.500 JST",  // 2.0
+                "2019-09-07 16:27:13.000 JST",  // 3.0
+	        },
+	        new Boolean(true)
 		),
     };
 
