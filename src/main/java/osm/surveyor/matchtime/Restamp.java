@@ -15,6 +15,8 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import osm.jp.gpx.ImgFolder;
+
 /**
  * 動画から一定間隔で切り出したIMAGEファイルの更新日時を書き換える
  * 
@@ -211,30 +213,22 @@ public class Restamp extends Thread {
         int bCount2 = 0;
         boolean base1 = false;
         boolean base2 = false;
-        ArrayList<Path> jpgFiles = new ArrayList<>();
 
         // 指定されたディレクトリ内のJPEGファイルすべてを対象とする
-        try (Stream<Path> files = Files.list(Paths.get(imgDir.toString()))){
-            List<Path> sortedList = files.sorted(Comparator.naturalOrder()).collect(Collectors.toList());
-
-            for (Path p : sortedList) {
-                if (Files.exists(p) && Files.isRegularFile(p)) {
-                    String filename = p.getFileName().toString();
-                    if (filename.toUpperCase().endsWith(".JPG")) {
-                        jpgFiles.add(p);
-                        bCount1 += (base1 ? 0 : 1);
-                        bCount2 += (base2 ? 0 : 1);
-                        if (p.getFileName().equals(baseFile1.getFileName())) {
-                            base1 = true;
-                        }
-                        if (p.getFileName().equals(baseFile2.getFileName())) {
-                            base2 = true;
-                        }
-                    }
+        //try (Stream<Path> files = Files.list(Paths.get(imgDir.toString()))){
+        try (ImgFolder imgFolder = new ImgFolder(Paths.get(imgDir.toString()))){
+            for (ImgFile img : imgFolder) {
+                bCount1 += (base1 ? 0 : 1);
+                bCount2 += (base2 ? 0 : 1);
+                if (img.getFileName().equals(baseFile1.getFileName())) {
+                    base1 = true;
+                }
+                if (img.getFileName().equals(baseFile2.getFileName())) {
+                    base2 = true;
                 }
             }
-            if (!jpgFiles.isEmpty()) {
-                DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS z");
+            if (!imgFolder.isEmpty()) {
+                DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
 
                 // imgDir内の画像ファイルを処理する
                 long span = this.baseTime2.getTime() - this.baseTime1.getTime();
@@ -242,7 +236,7 @@ public class Restamp extends Thread {
                 int i = 0;
                 System.out.println("-------------------------------");
                 System.out.println("Update last modified date time.");
-                for (Path jpgFile : jpgFiles) {
+                for (ImgFile img : imgFolder) {
                     long deltaMsec = (i - (bCount1 -1)) * span;
                     i++;
                     Calendar cal = Calendar.getInstance();
