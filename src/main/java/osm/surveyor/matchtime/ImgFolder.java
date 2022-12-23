@@ -1,23 +1,14 @@
-package osm.jp.gpx;
+package osm.surveyor.matchtime;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Path;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.TransformerException;
-
-import org.apache.commons.imaging.ImageReadException;
-import org.apache.commons.imaging.ImageWriteException;
-import org.xml.sax.SAXException;
-
 public class ImgFolder extends ArrayList<ImgFile> {
-    AppParameters params;
-    Path imgDir;
+    private static final long serialVersionUID = 1L;
+	Path imgDir;
 	
 	public ImgFolder(Path imgDir) {
 		this.imgDir = imgDir;

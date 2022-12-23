@@ -6,16 +6,9 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import osm.jp.gpx.ImgFolder;
 
 /**
  * 動画から一定間隔で切り出したIMAGEファイルの更新日時を書き換える
@@ -215,59 +208,53 @@ public class Restamp extends Thread {
         boolean base2 = false;
 
         // 指定されたディレクトリ内のJPEGファイルすべてを対象とする
-        //try (Stream<Path> files = Files.list(Paths.get(imgDir.toString()))){
-        try (ImgFolder imgFolder = new ImgFolder(Paths.get(imgDir.toString()))){
-            for (ImgFile img : imgFolder) {
-                bCount1 += (base1 ? 0 : 1);
-                bCount2 += (base2 ? 0 : 1);
-                if (img.getFileName().equals(baseFile1.getFileName())) {
-                    base1 = true;
-                }
-                if (img.getFileName().equals(baseFile2.getFileName())) {
-                    base2 = true;
-                }
+    	ImgFolder imgFolder = new ImgFolder(Paths.get(imgDir.toString()));
+        for (ImgFile img : imgFolder) {
+            bCount1 += (base1 ? 0 : 1);
+            bCount2 += (base2 ? 0 : 1);
+            if (img.getName().equals(baseFile1.toFile().getName())) {
+                base1 = true;
             }
-            if (!imgFolder.isEmpty()) {
-                DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
-
-                // imgDir内の画像ファイルを処理する
-                long span = this.baseTime2.getTime() - this.baseTime1.getTime();
-                span = span / (bCount2 - bCount1);
-                int i = 0;
-                System.out.println("-------------------------------");
-                System.out.println("Update last modified date time.");
-                for (ImgFile img : imgFolder) {
-                    long deltaMsec = (i - (bCount1 -1)) * span;
-                    i++;
-                    Calendar cal = Calendar.getInstance();
-                    cal.setTime(this.baseTime1);
-                    cal.add(Calendar.MILLISECOND, (int) deltaMsec);
-                    System.out.println(String.format("\t%s --> %s", df2.format(cal.getTime()), jpgFile.getFileName()));
-
-                    //------------------------------------------
-                    // ファイルをコピーして更新日時を変更する
-                    //------------------------------------------
-                    try {
-                        Path outFile;
-                        if (outDir.equals(imgDir)) {
-                            outFile = jpgFile;
-                        }
-                        else {
-                            outFile = Paths.get(outDir.toString(), jpgFile.toFile().getName());
-                            Files.copy(jpgFile, outFile);
-                        }
-                        outFile.toFile().setLastModified(cal.getTimeInMillis());
-                    }
-                    catch (Exception e) {
-                        System.out.println("[ERROR] Can not convert."+ e.toString());
-                    }
-                }
-                System.out.println("-------------------------------");
+            if (img.getName().equals(baseFile2.toFile().getName())) {
+                base2 = true;
             }
         }
-        catch(IOException e) {
-            e.printStackTrace();
-            this.ex = new Exception(e);
+        if (!imgFolder.isEmpty()) {
+            DateFormat df2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss z");
+
+            // imgDir内の画像ファイルを処理する
+            long span = this.baseTime2.getTime() - this.baseTime1.getTime();
+            span = span / (bCount2 - bCount1);
+            int i = 0;
+            System.out.println("-------------------------------");
+            System.out.println("Update last modified date time.");
+            for (ImgFile img : imgFolder) {
+                long deltaMsec = (i - (bCount1 -1)) * span;
+                i++;
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(this.baseTime1);
+                cal.add(Calendar.MILLISECOND, (int) deltaMsec);
+                System.out.println(String.format("\t%s --> %s", df2.format(cal.getTime()), img.getName()));
+
+                //------------------------------------------
+                // ファイルをコピーして更新日時を変更する
+                //------------------------------------------
+                try {
+                    Path outFile;
+                    if (outDir.equals(imgDir)) {
+                    	outFile = img.toPath();
+                    }
+                    else {
+                        outFile = Paths.get(outDir.toString(), img.getName());
+                        Files.copy(img.toPath(), outFile);
+                    }
+                    outFile.toFile().setLastModified(cal.getTimeInMillis());
+                }
+                catch (Exception e) {
+                    System.out.println("[ERROR] Can not convert."+ e.toString());
+                }
+            }
+            System.out.println("-------------------------------");
         }
     }
 }

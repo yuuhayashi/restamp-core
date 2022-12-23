@@ -1,4 +1,4 @@
-package osm.jp.gpx;
+package osm.surveyor.matchtime;
 
 import java.io.File;
 import java.io.FilenameFilter;
